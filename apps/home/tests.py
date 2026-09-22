@@ -18,3 +18,18 @@ class HomeAccessTests(TestCase):
 
 		self.assertEqual(response.status_code, 200)
 		self.assertContains(response, 'Home Page')
+
+	def test_logout_redirects_to_login_and_blocks_home(self):
+		user = User.objects.create_user(
+			username='usuario',
+			password='senha-segura-123',
+		)
+		self.client.force_login(user)
+
+		response = self.client.get('/logout/')
+
+		self.assertRedirects(response, '/login/')
+		self.assertRedirects(
+			self.client.get('/home/'),
+			'/login/?next=/home/',
+		)

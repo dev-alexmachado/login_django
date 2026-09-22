@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
@@ -39,3 +39,7 @@ def cadastrar(request):
         return redirect('login')
 
     return render(request, 'cadastrar.html')
+
+def logout(request):
+    auth_logout(request)
+    return redirect('login')
