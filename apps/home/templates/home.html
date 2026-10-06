@@ -11,7 +11,9 @@
                 {{ pessoa.id_pessoa }} |
                 {{ pessoa.nome }} |
                 {{ pessoa.email }} |
-                {{ pessoa.data_nascimento|date:"d/m/Y" }}
+                {{ pessoa.data_nascimento|date:"d/m/Y" }} |
+                <a href="{% url 'alterar_pessoa' pessoa.id_pessoa %}">Alterar</a> |
+                <a href="{% url 'excluir_pessoa' pessoa.id_pessoa %}">Excluir</a>
             </li>
         {% empty %}
             <li>Nenhuma pessoa cadastrada.</li>
