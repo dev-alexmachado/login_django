@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Pessoa
+from .forms import PessoaForm
 
 # Create your views here.
 @login_required
@@ -11,32 +12,44 @@ def home(request):
 @login_required
 def nova_pessoa(request):
     if request.method == 'POST':
-        nome = request.POST.get('nome')
-        email = request.POST.get('email')
-        data_nascimento = request.POST.get('data_nascimento')
+        form = PessoaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = PessoaForm()
 
-        Pessoa.objects.create(
-            nome=nome,
-            email=email,
-            data_nascimento=data_nascimento
-        )
+    return render(request, 'nova_pessoa.html', {'form': form})
 
-        return redirect('home')
+# NOTE: código antigo @login_required
+# def alterar_pessoa(request, id_pessoa):
+#     pessoa = Pessoa.objects.get(id_pessoa=id_pessoa)
+#     if request.method == 'POST':
+#         pessoa.nome = request.POST.get('nome')
+#         pessoa.email = request.POST.get('email')
+#         pessoa.data_nascimento = request.POST.get('data_nascimento')
 
-    return render(request, 'nova_pessoa.html')
+#         pessoa.save()
+
+#         return redirect('home')
+#     return render(request, 'alterar_pessoa.html', {'pessoa': pessoa})
 
 @login_required
 def alterar_pessoa(request, id_pessoa):
     pessoa = Pessoa.objects.get(id_pessoa=id_pessoa)
+
     if request.method == 'POST':
-        pessoa.nome = request.POST.get('nome')
-        pessoa.email = request.POST.get('email')
-        pessoa.data_nascimento = request.POST.get('data_nascimento')
+        form = PessoaForm(request.POST, instance=pessoa)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = PessoaForm(instance=pessoa)
 
-        pessoa.save()
-
-        return redirect('home')
-    return render(request, 'alterar_pessoa.html', {'pessoa': pessoa})
+    return render(request, 'alterar_pessoa.html', {
+        'form': form,
+        'pessoa': pessoa,
+    })
 
 @login_required
 def excluir_pessoa(request, id_pessoa):

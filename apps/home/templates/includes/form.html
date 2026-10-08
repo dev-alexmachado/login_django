@@ -1,0 +1,11 @@
+<label for="{{ form.nome.id_for_label }}">Nome:</label><br>
+{{ form.nome }}<br><br>
+<label for="{{ form.email.id_for_label }}">Email:</label><br>
+{{ form.email }}<br>
+{% for erro in form.email.errors %}
+<small>{{ erro }}</small><br>
+{% endfor %}<br>
+<label for="{{ form.data_nascimento.id_for_label }}">Data de Nascimento:</label><br>
+{{ form.data_nascimento }}<br><br>
+<label for="{{ form.comentario.id_for_label }}">Comentário:</label><br>
+{{ form.comentario }}<br><br>

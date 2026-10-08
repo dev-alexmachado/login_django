@@ -13,7 +13,8 @@
                 {{ pessoa.email }} |
                 {{ pessoa.data_nascimento|date:"d/m/Y" }} |
                 <a href="{% url 'alterar_pessoa' pessoa.id_pessoa %}">Alterar</a> |
-                <a href="{% url 'excluir_pessoa' pessoa.id_pessoa %}">Excluir</a>
+                <a href="{% url 'excluir_pessoa' pessoa.id_pessoa %}">Excluir</a><br>
+                {{ pessoa.comentario }}
             </li>
         {% empty %}
             <li>Nenhuma pessoa cadastrada.</li>
